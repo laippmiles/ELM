@@ -23,4 +23,5 @@ for i in range(list(shape(Rn))[0]):
     Rn[i] /= wholeTestNum
     print('totalR', i + 1, ':', Rn[i])
 
-matrix2CSV(Rn,['gmean'])
+#matrix2CSV(Rn,['gmean'])
+#写入CSV的示例
