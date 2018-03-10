@@ -1,5 +1,6 @@
 from ELMCrossVvalidation import ELMCrossVvalidation
-from numpy import shape
+from numpy import shape, savetxt, array
+from matrix2CSV import matrix2CSV
 wholeTestNum = 10
 acc = 0
 gmean = 0
@@ -19,4 +20,7 @@ print('-'*10,'Acc:',acc/wholeTestNum,'-'*10)
 print('-'*10,'Gmean:',gmean/wholeTestNum,'-'*10)
 print('-'*10,'TrainTime:',trainTime/wholeTestNum,'-'*10)
 for i in range(list(shape(Rn))[0]):
-    print('totalR', i + 1, ':', Rn[i] / wholeTestNum)
+    Rn[i] /= wholeTestNum
+    print('totalR', i + 1, ':', Rn[i])
+
+matrix2CSV(Rn,['gmean'])
