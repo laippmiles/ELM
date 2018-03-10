@@ -3,7 +3,6 @@ from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
-
 def WELM(name, numberofHiddenNeurons, C = 64, i=1):
     path = r'D:\桌面\ELM\dataSet'+ '\\' + name
     trainSet = '\\' + name + '-train' + str(i) + '.csv'
@@ -18,7 +17,7 @@ def WELM(name, numberofHiddenNeurons, C = 64, i=1):
     beginTrainTime = time()
     inputWeight = random.random(size=(numberofHiddenNeurons, trainStr.numOfFeature))*2-1
     biasOfHiddenNeurons = random.random(size=(numberofHiddenNeurons, 1))
-    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus)
+    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus,'W1')
     tempH = inputWeight * trainStr.X.T
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix
@@ -45,18 +44,30 @@ def WELM(name, numberofHiddenNeurons, C = 64, i=1):
     #print(trainStr.dataClassStatus)
     return acc , gmean, Rn, trainTime
 
-def getWMatrix(y,numberofData,dataClassStatus):
+def getWMatrix(y,numberofData,dataClassStatus,type = 'W1'):
     D = zeros((numberofData,1))
-    for i in range(numberofData):
-        for j in range(len(dataClassStatus)):
-            dataClass = j+1
-            if y[i] == dataClass:
-                D[i] = 1/dataClassStatus[dataClass]
+    numOfClass = len(dataClassStatus)
+    if type == 'W1':
+        for i in range(numberofData):
+            for j in range(numOfClass):
+                dataClass = j+1
+                if y[i] == dataClass:
+                    D[i] = 1/dataClassStatus[dataClass]
+    else:#W2法
+        avg = int(numberofData / numOfClass)
+        for i in range(numberofData):
+            for j in range(numOfClass):
+                dataClass = j+1
+                if y[i] == dataClass:
+                    if dataClassStatus[dataClass] > avg:
+                        D[i] = 0.618/dataClassStatus[dataClass]
+                    else:
+                        D[i] = 1 / dataClassStatus[dataClass]
     W = zeros((numberofData,numberofData))
     for i in range(numberofData):
         W[i,i] = D[i]
-
-
+    return W
+'''
     DClassStatus = {}
     for k in range(len(D)):
         if D[k,0] not in DClassStatus:
@@ -64,4 +75,4 @@ def getWMatrix(y,numberofData,dataClassStatus):
         else:
             DClassStatus[D[k,0]] += 1
     #print(DClassStatus)
-    return W
+'''
