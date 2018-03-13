@@ -5,6 +5,8 @@ import email.mime.multipart
 import email.mime.text
 from passWord import decode
 from email.mime.application import MIMEApplication
+from email.utils import formataddr
+
 
 def send_email_from_lzy(subject, content, filePath, fileName):
     import smtplib
@@ -17,7 +19,7 @@ def send_email_from_lzy(subject, content, filePath, fileName):
     pwd = decode(113,'88@8B9=8G988A9C9:9@9D9C9=989@9;9')
     to = decode(422,'?Q<Q;Q;Q?Q;Q?QGQ?Q>V?U?U@P=TATCT')
 
-    msg['from'] = '李泽言'
+    msg['From'] = formataddr(["李泽言", user])
     msg['to'] = to
     msg['Subject'] = subject
     content1 = MIMEText(content, 'plain', 'utf-8')
