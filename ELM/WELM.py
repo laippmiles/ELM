@@ -3,7 +3,7 @@ from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
-def WELM(name, numberofHiddenNeurons, C = 64, i=1):
+def WELM(name, numberofHiddenNeurons,type='W1', C = 64, i=1):
     path = r'D:\桌面\ELM\dataSet'+ '\\' + name
     trainSet = '\\' + name + '-train' + str(i) + '.csv'
     testSet = '\\' + name + '-test' + str(i) +'.csv'
@@ -17,7 +17,7 @@ def WELM(name, numberofHiddenNeurons, C = 64, i=1):
     beginTrainTime = time()
     inputWeight = random.random(size=(numberofHiddenNeurons, trainStr.numOfFeature))*2-1
     biasOfHiddenNeurons = random.random(size=(numberofHiddenNeurons, 1))
-    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus,'W1')
+    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus,type)
     tempH = inputWeight * trainStr.X.T
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix

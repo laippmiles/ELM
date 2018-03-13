@@ -1,57 +1,55 @@
-from csv2ListOrMatrix import *
-from numpy import matrix, ones, shape, linalg, random, tile, exp, max
-NumberofHiddenNeurons = 20
-#载入数据
-path = r'D:\桌面\ELM\dataSet\diabetes'
-trainSet = r'\diabetes-train1.csv'
-testSet = r'\diabetes-test1.csv'
-train = csv2ListOrMatrix(path + trainSet)
-test = csv2ListOrMatrix(path + testSet)
-#trainData = train[:,1:]
-#trainLabel = train[:,0]
-trainData = train[:,1:]
-trainLabel = train[:,0]
-numOfTrainData = list(shape(trainData))[0]
-numOfTrainFeature = list(shape(trainData))[1]
-dataClass = []
-for k in range(numOfTrainData):
-    if trainLabel[k,0] not in dataClass:
-        dataClass.append(trainLabel[k,0])
-numOfClass = len(dataClass)
-temptrainLabel = ones((numOfClass,numOfTrainData)) * -1
-for k in range(numOfTrainData):
-    i = int(trainLabel[k,0] - 1)
-    temptrainLabel[i,k] = 1
-print(temptrainLabel)
-testData = test[:,1:]
-testLabel = test[:,0]
-numOftestData = list(shape(testData))[0]
+from aWholeTest import aWholeTest
+from matrix2CSV import matrix2CSV, CSVDeleteSpace
+from csv2ListOrMatrix import csv2ListOrMatrix
+from numpy import shape, zeros
+from Mail import mailFromLZY
+#写文件名要用的
+from datetime import datetime
+from re import sub
+numberofHiddenNeuronsList = list(range(5,10,5))
+CParaList = list(range(0,2)) ; CList = []
+for i in range(len(CParaList)):
+    CList.append(2**CParaList[i])
 
-inputWeight = random.random(size=(NumberofHiddenNeurons, numOfTrainFeature))*2-1
-biasOfHiddenNeurons = random.random(size=(NumberofHiddenNeurons, 1))
-tempH = inputWeight * trainData.T
-biasMatrix = tile(biasOfHiddenNeurons,(1,numOfTrainData))
-tempH = tempH + biasMatrix
-#到tempH为止size是（隐含层节点数，样本数）
-#print(shape(tempH))
-#print('-'*50)
-H =  1 / (1 + exp(-tempH))
-outputWeight = (linalg.pinv(H.T) * temptrainLabel.T)
-print(shape(outputWeight))
+# 载入数据
+subjectName = 'TestAnawer_' + sub('[:.\s]', '_', str(datetime.now()))
+fileName = subjectName + '.csv'
+filePath = r'D:\桌面\ELM' + '\\'
 
-tempTest = inputWeight * testData.T
-print(shape(tempTest))
-biasMatrixTest = tile(biasOfHiddenNeurons,(1,numOftestData))
-print(shape(biasMatrixTest))
-tempTest = tempTest + biasMatrixTest
-H_test = 1 / (1 + exp(-tempTest))
-Y = (H_test.T * outputWeight).A
-Answer = ones((numOftestData,1))
-for k in range(numOftestData):
-    Answer[k,0] = (Y[k,:].tolist().index(max(Y[k,:])))+1
-error = 0.0
-for k in range(numOftestData):
-    if Answer[k,0] != testLabel[k,0]:
-        print('classify:',Answer[k,0], 'Actral:',testLabel[k,0])
-        error += 1
-print('acc:', float(1-error/numOftestData))
+name = 'WWP509_2017'
+info1 = ['name', name]
+matrix2CSV(info1, filePath + fileName)
+
+Wtype = 'W1'
+info2 = ['WType', Wtype]
+matrix2CSV(info2, filePath + fileName)
+
+ActivationFunction = 'sig'
+info3 = ['ActivationFunction', ActivationFunction]
+matrix2CSV(info3, filePath + fileName)
+
+for i in range(len(numberofHiddenNeuronsList)):
+    for j in range(len(CList)):
+        print(numberofHiddenNeuronsList[i],CList[j])
+        acc, gmean, trainTime, Rn = aWholeTest(name, Wtype, numberofHiddenNeuronsList[i], CList[j])
+        if i == 0 and j == 0:
+            nameList = ['NumberofHiddenNeurons', 'C', 'trainTime', 'acc', 'Gmean']
+            for Ri in range(list(shape(Rn))[0]):
+                nameList.append('R'+str(Ri+1))
+            matrix2CSV(nameList, filePath + fileName)
+        answer = zeros((5+list(shape(Rn))[0]))
+        answer[0] = numberofHiddenNeuronsList[i]
+        answer[1] = CList[j]
+        answer[2] = trainTime
+        answer[3] = acc
+        answer[4] = gmean
+        for ans in range(list(shape(Rn))[0]):
+            answer[5+ans] = Rn[ans]
+        matrix2CSV(answer, filePath + fileName)
+
+#写入CSV的示例
+CSVDeleteSpace(filePath+fileName)
+
+subject = '笨蛋，你的实验跑完了。'
+content = '赶快回来。'
+mailFromLZY(subject,content,filePath,fileName)

@@ -19,7 +19,7 @@ def CSVDeleteSpace(path = r"D:\桌面\ELM\test.csv"):
     with open(path, 'wt')as fout:  # 再次文本方式写入，不含空行
         fout.write(lines)
 
-def matrix2CSV_Once(matrix ,indexName, path = r"D:\桌面\ELM\test1.csv"):
+def matrix2CSV_Once(matrix ,indexName, path = r"D:\桌面\ELM\test.csv"):
     # python2可以用file替代open
     with open(path, "wt") as csvfile:
         writer = csv.writer(csvfile, dialect='excel')
