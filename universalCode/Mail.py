@@ -24,14 +24,10 @@ def send_email_from_lzy(subject, content, filePath, fileName):
     msg['Subject'] = subject
     content1 = MIMEText(content, 'plain', 'utf-8')
     msg.attach(content1)
-    attfile = filePath + fileName
-    basename = os.path.basename(attfile)
-    fp = open(attfile, 'rb')
-    att = MIMEText(fp.read(), 'base64', 'utf-8')
-    att["Content-Type"] = 'application/octet-stream'
-    att.add_header('Content-Disposition', 'attachment', filename=('gbk', '', basename))
-    encoders.encode_base64(att)
-    msg.attach(att)
+    annexPath = filePath + fileName
+    part = MIMEApplication(open(annexPath,'rb').read())
+    part.add_header('Content-Disposition', 'attachment', filename= fileName)
+    msg.attach(part)
     # -----------------------------------------------------------
     smtpHost = decode(422, '=UCT:U>U@P?U?U@P=TATCT')
     s = smtplib.SMTP_SSL(smtpHost,465)

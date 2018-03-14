@@ -4,7 +4,6 @@ def matrix2CSV(matrix , path = r"D:\桌面\ELM\test.csv"):
     #python2可以用file替代open
     with open(path,"at") as csvfile:
         writer = csv.writer(csvfile,dialect='excel')
-
         #先写入columns_name
         #writer.writerow(indexName)
         #写入多行用writerows
