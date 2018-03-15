@@ -3,12 +3,8 @@ from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
-def WELM(name, numberofHiddenNeurons,type='W1', C = 64, i=1):
-    path = r'D:\桌面\ELM\dataSet'+ '\\' + name
-    trainSet = '\\' + name + '-train' + str(i) + '.csv'
-    testSet = '\\' + name + '-test' + str(i) +'.csv'
-    train = csv2ListOrMatrix(path + trainSet)
-    test = csv2ListOrMatrix(path + testSet)
+def WELM(numberofHiddenNeurons,train, test, type='W1', C = 64,baseclasser = False):
+
     trainStr = ELMDataStruct(train)
     testStr = ELMDataStruct(test)
     #(trainStr.labelsMatrix)
@@ -42,7 +38,10 @@ def WELM(name, numberofHiddenNeurons,type='W1', C = 64, i=1):
     print('trainTime:',trainTime)
     gmean ,Rn = G_mean(answer,testStr.y,testStr.numOfClass)
     #print(trainStr.dataClassStatus)
-    return acc , gmean, Rn, trainTime
+    if baseclasser == True:
+        return answer
+    else:
+        return acc , gmean, Rn, trainTime
 
 def getWMatrix(y,numberofData,dataClassStatus,type = 'W1'):
     D = zeros((numberofData,1))

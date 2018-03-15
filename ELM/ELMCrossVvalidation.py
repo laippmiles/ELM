@@ -7,8 +7,14 @@ def ELMCrossVvalidation(name,type, numberofHiddenNeurons = 50, C = 64):
     totalTrainTime = 0
     for i in range(CrossVvalidatioNum):
         k = i+1
-        acc, gmean, Rn, trainTime = WELM(name, numberofHiddenNeurons,type, C,i=k)
-        #acc, gmean, Rn, trainTime = ELM('WWP509_2017', 145,  i=k)
+        path = r'D:\桌面\ELM\dataSet' + '\\' + name
+        trainSet = '\\' + name + '-train' + str(k) + '.csv'
+        testSet = '\\' + name + '-test' + str(k) + '.csv'
+        train = csv2ListOrMatrix(path + trainSet)
+        test = csv2ListOrMatrix(path + testSet)
+
+        acc, gmean, Rn, trainTime = WELM(numberofHiddenNeurons, train, test, type, C)
+        #acc, gmean, Rn, trainTime = ELM( 145,train, test)
         totalAcc += acc
         totalGmean += gmean
         totalTrainTime += trainTime
@@ -20,10 +26,12 @@ def ELMCrossVvalidation(name,type, numberofHiddenNeurons = 50, C = 64):
     totalAcc /= CrossVvalidatioNum
     totalGmean /= CrossVvalidatioNum
     totalTrainTime /= CrossVvalidatioNum
-    #print('totalAcc:',totalAcc)
-    #print('totalGmean:',totalGmean)
-    #print('totalTrainTime:',totalTrainTime)
+    print('CVAcc:',totalAcc)
+    print('CVGmean:',totalGmean)
+    print('CVTrainTime:',totalTrainTime)
     for i in range(list(shape(totalRn))[0]):
             totalRn[i] /= CrossVvalidatioNum
-            #print('totalR', i+1 ,':',totalRn[i])
+            print('CVR', i+1 ,':',totalRn[i])
     return totalAcc, totalGmean, totalTrainTime, totalRn
+
+#ELMCrossVvalidation('WWP509_2017','W1', numberofHiddenNeurons = 50, C = 64)

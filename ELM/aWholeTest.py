@@ -27,3 +27,6 @@ def aWholeTest(name, type, numberofHiddenNeurons, C):
         print('totalR', i + 1, ':', Rn[i])
 
     return acc,gmean,trainTime,Rn
+
+#留个测试指令
+#aWholeTest('WWP509_2017', 'W1', 50, 64)

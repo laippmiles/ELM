@@ -4,12 +4,8 @@ from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
 
-def ELM(name, numberofHiddenNeurons, i=1):
-    path = r'D:\桌面\ELM\dataSet'+ '\\' + name
-    trainSet = '\\' + name + '-train' + str(i) + '.csv'
-    testSet = '\\' + name + '-test' + str(i) +'.csv'
-    train = csv2ListOrMatrix(path + trainSet)
-    test = csv2ListOrMatrix(path + testSet)
+def ELM(numberofHiddenNeurons,train, test,baseclasser = False):
+
     trainStr = ELMDataStruct(train)
     testStr = ELMDataStruct(test)
     #(trainStr.labelsMatrix)
@@ -40,4 +36,7 @@ def ELM(name, numberofHiddenNeurons, i=1):
     acc = accuracy(answer,testStr.y)
     print('trainTime:',trainTime)
     gmean, Rn = G_mean(answer,testStr.y,testStr.numOfClass)
-    return acc , gmean, Rn, trainTime
+    if baseclasser == True:
+        return answer
+    else:
+        return acc , gmean, Rn, trainTime
