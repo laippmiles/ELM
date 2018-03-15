@@ -5,11 +5,14 @@ from evaluation import accuracy, G_mean
 from time import time
 def WELM(numberofHiddenNeurons,train, test, type='W1', C = 64,baseclasser = False):
 
-    trainStr = ELMDataStruct(train)
-    testStr = ELMDataStruct(test)
+    if baseclasser == False:
+        trainStr = ELMDataStruct(train)
+        testStr = ELMDataStruct(test)
+    else:
+        trainStr = train
+        testStr = test
     #(trainStr.labelsMatrix)
     #print(testStr.labelsMatrix)
-
     beginTrainTime = time()
     inputWeight = random.random(size=(numberofHiddenNeurons, trainStr.numOfFeature))*2-1
     biasOfHiddenNeurons = random.random(size=(numberofHiddenNeurons, 1))

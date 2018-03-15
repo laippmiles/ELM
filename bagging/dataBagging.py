@@ -1,9 +1,9 @@
-from loadDataToTest import loadDataToTest
-from numpy import zeros, column_stack,mat
+from loadData import loadData
+from numpy import zeros, column_stack,matrix
 from random import uniform
 from matrix2CSV import matrix2CSV_Once
-def dataBagging(name = 'WWP509_2017'):
-    trainStr = loadDataToTest(name)[0]
+
+def dataBagging(trainStr):
     baggingDataClass = 0
     baggingData = zeros((trainStr.numOfData,trainStr.numOfFeature))
     baggingLabel = zeros((trainStr.numOfData,1))
@@ -28,7 +28,7 @@ def dataBagging(name = 'WWP509_2017'):
     outputData = (column_stack((baggingLabel,baggingData)))
     #print(type(outputData))
     #print(type(trainStr.X))
-    matrix2CSV_Once(outputData,[])
-
+    #matrix2CSV_Once(outputData,[])
+    return matrix(outputData)
 #dataBagging('WWP509_2017')
 #测试指令
