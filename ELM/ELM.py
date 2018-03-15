@@ -6,8 +6,12 @@ from time import time
 
 def ELM(numberofHiddenNeurons,train, test,baseclasser = False):
 
-    trainStr = ELMDataStruct(train)
-    testStr = ELMDataStruct(test)
+    if baseclasser == False:
+        trainStr = ELMDataStruct(train)
+        testStr = ELMDataStruct(test)
+    else:
+        trainStr = train
+        testStr = test
     #(trainStr.labelsMatrix)
     #print(testStr.labelsMatrix)
 
