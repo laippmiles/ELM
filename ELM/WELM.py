@@ -1,6 +1,6 @@
 from ELMDataStruct import ELMDataStruct
 from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
-from getH import getH
+from getH import getH, getRBF
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
@@ -22,7 +22,10 @@ def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig'
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix
     #到tempH为止size是（隐含层节点数，样本数）
-    H = getH(tempH, ActivationFunction)
+    if ActivationFunction == 'rbf':
+        H = getRBF(trainStr.X,inputWeight,biasOfHiddenNeurons,numberofHiddenNeurons)
+    else:
+        H = getH(tempH,ActivationFunction)
     tempWeight = H * W * H.T
     tempEye = eye(list(shape(tempWeight))[0])
     outputWeight = linalg.pinv(tempWeight/C + H * W * H.T) * H * W * trainStr.labelsMatrix.T
@@ -33,7 +36,11 @@ def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig'
     tempTest = inputWeight * testStr.X.T
     biasMatrixTest = tile(biasOfHiddenNeurons, (1, testStr.numOfData))
     tempTest = tempTest + biasMatrixTest
-    H_test = getH(tempTest, ActivationFunction)
+    print('ActivationFunction:',ActivationFunction)
+    if ActivationFunction == 'rbf':
+        H_test = getRBF(testStr.X,inputWeight,biasOfHiddenNeurons,numberofHiddenNeurons)
+    else:
+        H_test = getH(tempTest,ActivationFunction)
     Y = (H_test.T * outputWeight).A
     answer = ones((testStr.numOfData, 1))
     for k in range(testStr.numOfData):

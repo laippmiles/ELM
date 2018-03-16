@@ -1,6 +1,6 @@
 from ELMDataStruct import ELMDataStruct
-from numpy import ones, linalg, random, tile, exp, max
-from getH import getH
+from numpy import ones, linalg, random, tile, shape, max
+from getH import getH, getRBF
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
@@ -23,7 +23,11 @@ def ELM(numberofHiddenNeurons,train, test,ActivationFunction,baseclasser = False
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix
     #到tempH为止size是（隐含层节点数，样本数）
-    H =  getH(tempH,ActivationFunction)
+    print('ActivationFunction:',ActivationFunction)
+    if ActivationFunction == 'rbf':
+        H = getRBF(trainStr.X,inputWeight,biasOfHiddenNeurons,numberofHiddenNeurons)
+    else:
+        H = getH(tempH,ActivationFunction)
     outputWeight = (linalg.pinv(H.T) * trainStr.labelsMatrix.T)
     #outputWeight的尺寸：（NumberofHiddenNeurons，numOfClass）
     endTrainTime = time()
@@ -32,7 +36,10 @@ def ELM(numberofHiddenNeurons,train, test,ActivationFunction,baseclasser = False
     tempTest = inputWeight * testStr.X.T
     biasMatrixTest = tile(biasOfHiddenNeurons, (1, testStr.numOfData))
     tempTest = tempTest + biasMatrixTest
-    H_test = getH(tempTest,ActivationFunction)
+    if ActivationFunction == 'rbf':
+        H_test = getRBF(testStr.X,inputWeight,biasOfHiddenNeurons,numberofHiddenNeurons)
+    else:
+        H_test = getH(tempTest,ActivationFunction)
     Y = (H_test.T * outputWeight).A
     answer = ones((testStr.numOfData, 1))
     for k in range(testStr.numOfData):
