@@ -1,7 +1,7 @@
 from WELM import *
 from ELM import *
 from Bagging import *
-def ELMCrossVvalidation(name,type = 'W1', numberofHiddenNeurons = 100, C = 64):
+def ELMCrossVvalidation(name,type = 'W1',ActivationFunction = 'sig', numberofHiddenNeurons = 100, C = 64):
     CrossVvalidatioNum = 5
     totalAcc = 0
     totalGmean = 0
@@ -13,9 +13,9 @@ def ELMCrossVvalidation(name,type = 'W1', numberofHiddenNeurons = 100, C = 64):
         testSet = '\\' + name + '-test' + str(k) + '.csv'
         train = csv2ListOrMatrix(path + trainSet)
         test = csv2ListOrMatrix(path + testSet)
-        acc, gmean, Rn, trainTime = bagging_ELM(name, numberofHiddenNeurons, type, C)
-        #acc, gmean, Rn, trainTime = WELM(numberofHiddenNeurons, train, test, type, C)
-        #acc, gmean, Rn, trainTime = ELM( 145,train, test)
+        acc, gmean, Rn, trainTime = bagging_ELM(name, numberofHiddenNeurons, type, C,ActivationFunction)
+        #acc, gmean, Rn, trainTime = WELM(numberofHiddenNeurons, train, test, type,ActivationFunction, C)
+        #acc, gmean, Rn, trainTime = ELM( 145,train, test,ActivationFunction)
         totalAcc += acc
         totalGmean += gmean
         totalTrainTime += trainTime
@@ -35,4 +35,4 @@ def ELMCrossVvalidation(name,type = 'W1', numberofHiddenNeurons = 100, C = 64):
             print('CV R'+str(i+1) ,':',totalRn[i])
     return totalAcc, totalGmean, totalTrainTime, totalRn
 
-ELMCrossVvalidation('WWP509_2017','W1', numberofHiddenNeurons = 50, C = 64)
+ELMCrossVvalidation('WWP509_2017','W1','sin', numberofHiddenNeurons = 50, C = 64)

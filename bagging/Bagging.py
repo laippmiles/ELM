@@ -6,7 +6,7 @@ from WELM import WELM
 from evaluation import accuracy, G_mean
 from time import time
 from matrix2CSV import matrix2CSV_Once
-def bagging_ELM(name,numberofHiddenNeurons,Type='W1', C = 64):
+def bagging_ELM(name,numberofHiddenNeurons,Type='W1', C = 64,ActivationFunction = 'sig'):
     train,test = loadData(name)
     shapeOfAnswer = []
     numOfBaseClasser = 10
@@ -17,7 +17,7 @@ def bagging_ELM(name,numberofHiddenNeurons,Type='W1', C = 64):
         print('Begin %d th train' %(i+1))
         baggingTrain = dataBagging(trainStr)
         baggingTrainStr = ELMDataStruct(baggingTrain)
-        answer = WELM(numberofHiddenNeurons, baggingTrainStr, testStr, Type, C,baseclasser=True)
+        answer = WELM(numberofHiddenNeurons, baggingTrainStr, testStr, Type,ActivationFunction, C,baseclasser=True)
         if i == 0 :
             answerMatrix = answer
             shapeOfAnswer = shape(answer)

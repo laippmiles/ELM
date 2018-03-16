@@ -1,9 +1,10 @@
 from ELMDataStruct import ELMDataStruct
 from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
+from getH import getH
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
-def WELM(numberofHiddenNeurons,train, test, type='W1', C = 64,baseclasser = False):
+def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig', C = 64,baseclasser = False):
 
     if baseclasser == False:
         trainStr = ELMDataStruct(train)
@@ -21,7 +22,7 @@ def WELM(numberofHiddenNeurons,train, test, type='W1', C = 64,baseclasser = Fals
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix
     #到tempH为止size是（隐含层节点数，样本数）
-    H =  1 / (1 + exp(-tempH))
+    H = getH(tempH, ActivationFunction)
     tempWeight = H * W * H.T
     tempEye = eye(list(shape(tempWeight))[0])
     outputWeight = linalg.pinv(tempWeight/C + H * W * H.T) * H * W * trainStr.labelsMatrix.T
@@ -32,7 +33,7 @@ def WELM(numberofHiddenNeurons,train, test, type='W1', C = 64,baseclasser = Fals
     tempTest = inputWeight * testStr.X.T
     biasMatrixTest = tile(biasOfHiddenNeurons, (1, testStr.numOfData))
     tempTest = tempTest + biasMatrixTest
-    H_test = 1 / (1 + exp(-tempTest))
+    H_test = getH(tempTest, ActivationFunction)
     Y = (H_test.T * outputWeight).A
     answer = ones((testStr.numOfData, 1))
     for k in range(testStr.numOfData):
