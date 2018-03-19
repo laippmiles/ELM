@@ -5,7 +5,7 @@ from numpy import column_stack, shape, zeros, sum
 from WELM import WELM
 from evaluation import accuracy, G_mean
 from time import time
-from matrix2CSV import matrix2CSV_Once
+from array2CSV import array2CSV_Once
 def bagging_ELM(name,numberofHiddenNeurons,Type='W1', C = 64,ActivationFunction = 'sig'):
     train,test = loadData(name)
     shapeOfAnswer = []

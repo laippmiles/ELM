@@ -10,7 +10,6 @@ class ELMDataStruct:
         self.labelsMatrix = self.labelsTrans()
 
     def calcnumOfClass(self):
-
         for k in range(self.numOfData):
             if self.y[k, 0] not in self.dataClassStatus:
                 self.dataClassStatus[self.y[k, 0]] = 1

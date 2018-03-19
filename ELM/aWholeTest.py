@@ -1,13 +1,13 @@
 from ELMCrossVvalidation import ELMCrossVvalidation
 from numpy import shape
 
-def aWholeTest(name, type, numberofHiddenNeurons, C):
+def aWholeTest(name, type,ActivationFunction , numberofHiddenNeurons, C):
     wholeTestNum = 10
     acc = 0
     gmean = 0
     trainTime = 0
     for i in range(wholeTestNum):
-        totalAcc, totalGmean, totalTrainTime, totalRn = ELMCrossVvalidation(name, type, numberofHiddenNeurons, C)
+        totalAcc, totalGmean, totalTrainTime, totalRn = ELMCrossVvalidation(name, type,ActivationFunction, numberofHiddenNeurons, C)
         if i ==0 :
             Rn = totalRn
         else:
@@ -29,4 +29,4 @@ def aWholeTest(name, type, numberofHiddenNeurons, C):
     return acc,gmean,trainTime,Rn
 
 #留个测试指令
-#aWholeTest('WWP509_2017', 'W1', 50, 64)
+#aWholeTest('WWP509_2017', 'W1','sig', 50, 64)

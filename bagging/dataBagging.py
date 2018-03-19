@@ -1,7 +1,9 @@
-from loadData import loadData
 from numpy import zeros, column_stack,matrix
 from random import uniform
-from matrix2CSV import matrix2CSV_Once
+from random import uniform
+
+from numpy import zeros, column_stack, matrix
+
 
 def dataBagging(trainStr):
     baggingDataClass = 0

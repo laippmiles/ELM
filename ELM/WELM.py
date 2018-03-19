@@ -1,10 +1,10 @@
 from ELMDataStruct import ELMDataStruct
-from numpy import ones, linalg, random, tile, exp, max, zeros, eye, shape
+from numpy import ones, linalg, random, tile, mat, max, zeros, eye, shape
 from getH import getH, getRBF
 from csv2ListOrMatrix import csv2ListOrMatrix
 from evaluation import accuracy, G_mean
 from time import time
-def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig', C = 64,baseclasser = False):
+def WELM(numberofHiddenNeurons,train, test, Type='W1',ActivationFunction = 'sig', C = 64,baseclasser = False):
 
     if baseclasser == False:
         trainStr = ELMDataStruct(train)
@@ -17,7 +17,7 @@ def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig'
     beginTrainTime = time()
     inputWeight = random.random(size=(numberofHiddenNeurons, trainStr.numOfFeature))*2-1
     biasOfHiddenNeurons = random.random(size=(numberofHiddenNeurons, 1))
-    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus,type)
+    W = getWMatrix(trainStr.y,trainStr.numOfData,trainStr.dataClassStatus,Type)
     tempH = inputWeight * trainStr.X.T
     biasMatrix = tile(biasOfHiddenNeurons,(1,trainStr.numOfData))
     tempH = tempH + biasMatrix
@@ -28,7 +28,7 @@ def WELM(numberofHiddenNeurons,train, test, type='W1',ActivationFunction = 'sig'
         H = getH(tempH,ActivationFunction)
     tempWeight = H * W * H.T
     tempEye = eye(list(shape(tempWeight))[0])
-    outputWeight = linalg.pinv(tempWeight/C + H * W * H.T) * H * W * trainStr.labelsMatrix.T
+    outputWeight = linalg.pinv(tempEye/C + H * W * H.T) * H * W * mat(trainStr.labelsMatrix.T)
     #outputWeight的尺寸：（NumberofHiddenNeurons，numOfClass）
     endTrainTime = time()
     trainTime = endTrainTime - beginTrainTime

@@ -35,4 +35,5 @@ def ELMCrossVvalidation(name,type = 'W1',ActivationFunction = 'rbf', numberofHid
             print('CV R'+str(i+1) ,':',totalRn[i])
     return totalAcc, totalGmean, totalTrainTime, totalRn
 
-ELMCrossVvalidation('WWP509_2017','W1','sig', numberofHiddenNeurons = 50, C = 64)
+#ELMCrossVvalidation('WWP509_2017','W2','sig', numberofHiddenNeurons = 50, C = 64)
+#这个不杠住的话，载入子程序的时候会跑...

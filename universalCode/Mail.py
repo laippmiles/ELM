@@ -75,6 +75,7 @@ def mailToMe(subject, content, filePath, fileName):
 
 def mailFromLZY(subject, content, filePath, fileName):
     try:
+        print('当前文件地址：',filePath, fileName)
         send_email_from_lzy(subject, content, filePath, fileName)
     except Exception as err:
         print(err)
