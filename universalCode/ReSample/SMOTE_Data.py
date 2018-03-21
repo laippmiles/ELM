@@ -1,7 +1,9 @@
 from loadData import loadData
 from ELMDataStruct import ELMDataStruct
-from numpy import column_stack, row_stack, shape,zeros
+from numpy import column_stack, row_stack, shape, zeros, ones
 from array2CSV import array2CSV_Once
+from SMOTE import Smote
+from  random import shuffle
 
 def SMOTEData(trainStr):
     names = locals()
@@ -21,8 +23,22 @@ def SMOTEData(trainStr):
                 #到这names['Class_%s' % nameOfClass]是矩阵
 
     for nameOfClass in range(trainStr.numOfClass):
-        array2CSV_Once(names['Class_%s' % nameOfClass][1:list(shape(names['Class_%s' % nameOfClass]))[0],:].A,[],filename =(str(nameOfClass+1)+'.csv'))
-
+        #array2CSV_Once(names['Class_%s' % nameOfClass][1:list(shape(names['Class_%s' % nameOfClass]))[0],:].A,[],filename =(str(nameOfClass+1)+'.csv'))
+        classNumofData = list(shape(names['Class_%s' % nameOfClass]))[0]
+        if classNumofData < (trainStr.numOfData * 0.2):
+            s = Smote(names['Class_%s' % nameOfClass][:, 1:list(shape(names['Class_%s' % nameOfClass]))[1]], N=300, k=int(classNumofData / 3))
+            resampleData = s.over_sampling()
+            numOfResampleData = list(shape(resampleData))[0]
+            resampleDataLalel = ones((numOfResampleData,1)) * (nameOfClass+1)
+            resampleData = column_stack((resampleDataLalel, resampleData))
+            names['Class_%s' % nameOfClass] = row_stack((names['Class_%s' % nameOfClass] , resampleData))
+            #array2CSV_Once(names['Class_%s' % nameOfClass][1:list(shape(names['Class_%s' % nameOfClass]))[0],:].A,[],filename =(str(nameOfClass+1)+'res.csv'))
+    for nameOfClass in range(trainStr.numOfClass):
+        if nameOfClass == 0:
+            dataAfterResample = names['Class_%s' % nameOfClass]
+        else:
+            dataAfterResample = row_stack((dataAfterResample,names['Class_%s' % nameOfClass]))
+    array2CSV_Once(dataAfterResample.A,[],filename ='afterRes.csv')
 #以下为测试代码
 train = loadData()[0]
 trainStr = ELMDataStruct(train)
