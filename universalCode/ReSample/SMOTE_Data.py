@@ -60,6 +60,6 @@ def SMOTEData(trainStr):
     #print(type(dataOutput))
     return dataOutput
 #以下为测试代码
-train = loadData()[0]
+'''train = loadData()[0]
 trainStr = ELMDataStruct(train)
-SMOTEData(trainStr)
+SMOTEData(trainStr)'''
