@@ -1,9 +1,10 @@
-from loadData import loadData
-from ELMDataStruct import ELMDataStruct
 from numpy import column_stack, row_stack, shape, zeros, ones, mat
-from array2CSV import array2CSV_Once
 from SMOTE import Smote
 import random
+#底下是测试代码要用的
+from loadData import loadData
+from ELMDataStruct import ELMDataStruct
+from array2CSV import array2CSV_Once
 
 def SMOTEData(trainStr):
     names = locals()
@@ -62,4 +63,5 @@ def SMOTEData(trainStr):
 #以下为测试代码
 '''train = loadData()[0]
 trainStr = ELMDataStruct(train)
-SMOTEData(trainStr)'''
+print(SMOTEData(trainStr))'''
+
