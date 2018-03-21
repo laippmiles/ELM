@@ -36,10 +36,10 @@ class Smote:
 #print(numOfData)
 #参数N：采样倍率，K：KNN时采样的子集样本大小
 #以下为测试指令
-a=loadData()[0]
+'''a=loadData()[0]
 numOfFeature = list(shape(a))[1]
 numOfData = list(shape(a))[0]
 s=Smote(a[:,1:numOfFeature],N=100,k = int(numOfData/3))
-b = s.over_sampling()
+b = s.over_sampling()'''
 #print (b)
 #print(list(shape(b))[0])
