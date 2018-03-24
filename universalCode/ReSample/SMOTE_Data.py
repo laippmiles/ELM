@@ -38,6 +38,7 @@ def SMOTEData(trainStr):
             resampleData = column_stack((resampleDataLalel, resampleData))
             names['Class_%s' % nameOfClass] = row_stack((names['Class_%s' % nameOfClass] , resampleData))
             #array2CSV_Once(names['Class_%s' % nameOfClass][1:list(shape(names['Class_%s' % nameOfClass]))[0],:].A,[],filename =(str(nameOfClass+1)+'res.csv'))
+
     for nameOfClass in range(trainStr.numOfClass):
         if nameOfClass == 0:
             dataAfterResample = names['Class_%s' % nameOfClass]

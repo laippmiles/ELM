@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/dataSet" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/bagging" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/universalCode/ReSample" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/universalCode/K-mean" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
